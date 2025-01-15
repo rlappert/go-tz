@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/ugjka/go-tz/v2"
+	"github.com/rlappert/go-tz/v2"
 )
 
 func main() {
