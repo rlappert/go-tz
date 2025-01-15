@@ -27,10 +27,15 @@ import (
 	"io"
 	"math"
 	"runtime/debug"
+	"sync"
 )
 
-func init() {
-	load()
+var once sync.Once
+
+func initCache() {
+	once.Do(func() {
+		load()
+	})
 }
 
 //go:embed shapefile.gz
@@ -71,6 +76,7 @@ var ErrOutOfRange = errors.New("point's coordinates out of range")
 
 // GetZone returns a slice of strings containing time zone id's for a given Point
 func GetZone(p Point) (tzid []string, err error) {
+	initCache()
 	if p.Lon > 180 || p.Lon < -180 || p.Lat > 90 || p.Lat < -90 {
 		return nil, ErrOutOfRange
 	}
